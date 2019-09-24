@@ -4,7 +4,19 @@ import json
 
 PATH  = 'localhost:8081/matches/'
 
-class Board:
+class Board: 
+    def __init__(self, data):
+        self.points = data['points']
+        self.tiled  = data['tiled']
+
+        self.height=len(self.points)
+        self.wigth=len(self.points[0])
+
+        self.agents = [[0 for x in range(data['width'])] for y in range(data['height'])]
+        for team in data['teams']:
+            for agent in team['agents']:
+                self.agents[agent['y'] - 1][agent['x'] - 1] = agent['agentID']
+
     def bfs(self, team_ID): # チームごとに幅優先探索 引数: 探索するチームのID
         score = 0  # 点数初期化
         stack = [] # スタック
@@ -37,23 +49,29 @@ class Board:
 
         return score
     
-    def __init__(self, data):
-        self.points = data['points']
-        self.tiled  = data['tiled']
+   
 
-        self.agents = [[0 for x in range(data['width'])] for y in range(data['height'])]
-        for team in data['teams']:
-            for agent in team['agents']:
-                self.agents[agent['y'] - 1][agent['x'] - 1] = agent['agentID']
+def evaluate(board,our_team_ID,opp_team_ID):
+    our_area=board.bfs(our_team_ID)
+    our_tile=0
+    opp_area=board.bfs(opp_team_ID)
+    opp_tile=0
 
-def evaluate(board):
+    for y, row in enumerate(board.tiled):
+        for x, cell in enumerate(row):
+            if cell == our_team_ID:
+                our_tile += board.points[y][x]
+            if cell == opp_team_ID:
+                opp_tile += board.points[y][x]
+
+    return (our_area+our_tile)-(opp_area+pp_tile)
 
 
 def main():
-    team_ID  = input('Team ID<< ')
+    our_team_ID  = input('Team ID<< ')
     match_ID = input('Match ID<< ')
     token    = input('Token<< ')
-
+    
     while True:
         time.sleep(1)
         data = json.loads(sp.check_output([
@@ -62,10 +80,14 @@ def main():
             'Authorization: ' + token,
             'http://' + PATH + match_ID
         ]).decode())
-        
+        for team in data['teams']:
+            if team['teamID']!=our_team_ID:
+                opp_team_ID=team['teamID']
+         
+    
         board = Board(data)
         print(board.agents)
-        print(evaluate(board))
+        print(evaluate(board,our_team_ID,opp_team_ID))
 
 if __name__ == '__main__':
     main()
