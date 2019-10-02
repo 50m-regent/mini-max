@@ -64,7 +64,7 @@ class Agent:
         self.y = y
 
     def get_type(self, tiled):
-        return 'remove' if tiled[self.y + self.dy][self.x + self.dx] not in (0, self.team_ID) else 'move'
+        return 'move' if tiled[self.y + self.dy][self.x + self.dx] in (0, self.team_ID) else 'remove'
 
     def set_action(self, action):
         self.dx = action % 3 - 1

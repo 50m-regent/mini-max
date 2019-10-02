@@ -1,6 +1,5 @@
 #include<iostream>
 #include<stack>
-using namespace std;
 
 int team_ID;
 int match_ID;
@@ -72,7 +71,7 @@ struct Agent {
 		int agent_ID = agent_ID;
 		int x = x;
 		int y = y;
-		/*ˆÓ–¡‚í‚©‚ç‚ñ‚ñ‚ñ‚ñ‚ñ*/
+		/*ï¿½Ó–ï¿½ï¿½í‚©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 };
 
 struct BeamSerch {
