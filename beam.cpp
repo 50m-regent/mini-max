@@ -39,13 +39,28 @@ private:
 };
 
 class MatchData{
-
+public:
+    int height;
+    int width;
+    int points;
+    int tiled;
+    int teams[];
 };
 
 class MinMax{
 public:
+    int height,width,points,tiled;
+    Agent our_agents[],opp_agents[];
+
     MinMax(MatchData data, int our_ID){
-        
+        this->height = data.height;
+        this->width  = data.width;
+        this->points = data.points;
+        this->tiled  = data.tiled;
+
+        for(auto team : data.teams){
+            for(auto agent : teams.a)
+        }
     }
 };
     
